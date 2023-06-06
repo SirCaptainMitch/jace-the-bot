@@ -1,28 +1,113 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, HttpUrl, Field
 
 
-class Scryfall(BaseModel):
-    """
-    The main client for interfacing with Scryfall
-    """
-    BaseEndpoint: str = Field(alias='base_endpoint', default='https://api.scryfall.com')
+class ImageUris(BaseModel):
+    small: HttpUrl | None = Field(default=None)
+    normal: HttpUrl | None = Field(default=None)
+    large: HttpUrl | None = Field(default=None)
+    png: HttpUrl | None = Field(default=None)
+    art_crop: HttpUrl | None = Field(default=None)
+    border_crop: HttpUrl | None = Field(default=None)
 
 
-class Catalog(BaseModel):
-    """
-    The core base class for a catalog ( Type ).
-    """
-    Name: str = Field(alias='name')
+class Legalities(BaseModel):
+    standard: str | None = Field(default=None)
+    future: str | None = Field(default=None)
+    historic: str | None = Field(default=None)
+    gladiator: str | None = Field(default=None)
+    pioneer: str | None = Field(default=None)
+    explorer: str | None = Field(default=None)
+    modern: str | None = Field(default=None)
+    legacy: str | None = Field(default=None)
+    pauper: str | None = Field(default=None)
+    vintage: str | None = Field(default=None)
+    penny: str | None = Field(default=None)
+    commander: str | None = Field(default=None)
+    oathbreaker: str | None = Field(default=None)
+    brawl: str | None = Field(default=None)
+    historicbrawl: str | None = Field(default=None)
+    alchemy: str | None = Field(default=None)
+    paupercommander: str | None = Field(default=None)
+    duel: str | None = Field(default=None)
+    oldschool: str | None = Field(default=None)
+    premodern: str | None = Field(default=None)
+    predh: str | None = Field(default=None)
 
 
-class Land(Catalog):
-    """
-    Represents a land within the game.
-    """
+class Prices(BaseModel):
+    usd: str | None = Field(default=None)
+    usd_foil: str | None = Field(default=None)
+    usd_etched: str | None = Field(default=None)
+    eur: str | None = Field(default=None)
+    eur_foil: str | None = Field(default=None)
+    tix: str | None = Field(default=None)
 
 
-class Artist(Catalog):
-    """
-    Represents an artist for MTG art.
-    """
+class RelatedUris(BaseModel):
+    gatherer: HttpUrl | None = Field(default=None)
+    tcgplayer_infinite_articles: HttpUrl | None = Field(default=None)
+    tcgplayer_infinite_decks: HttpUrl | None = Field(default=None)
+    edhrec: HttpUrl | None = Field(default=None)
 
+
+class Card(BaseModel):
+    object: str | None = Field(default=None)
+    id: str | None = Field(default=None)
+    oracle_id: str | None = Field(default=None)
+    multiverse_ids: list[int] = Field(default=[])
+    mtgo_id: int | None = Field(default=None)
+    mtgo_foil_id: int | None = Field(default=None)
+    tcgplayer_id: int | None = Field(default=None)
+    cardmarket_id: int | None = Field(default=None)
+    name: str | None = Field(default=None)
+    lang: str | None = Field(default=None)
+    released_at: str | None = Field(default=None)
+    uri: HttpUrl | None = Field(default=None)
+    scryfall_uri: HttpUrl | None = Field(default=None)
+    layout: str | None = Field(default=None)
+    highres_image: bool | None = Field(default=None)
+    image_status: str | None = Field(default=None)
+    image_uris: ImageUris = Field(default=None)
+    mana_cost: str | None = Field(default=None)
+    cmc: float = Field(default=None)
+    type_line: str | None = Field(default=None)
+    oracle_text: str | None = Field(default=None)
+    colors: list[str] | None = Field(default=[])
+    color_identity: list[str] | None = Field(default=[])
+    keywords: list[str] | None = Field(default=[])
+    legalities: Legalities = Field(default=None)
+    games: list[str] | None = Field(default=[])
+    reserved: bool | None = Field(default=None)
+    foil: bool | None = Field(default=None)
+    nonfoil: bool | None = Field(default=None)
+    finishes: list[str] | None = Field(default=[])
+    oversized: bool | None = Field(default=None)
+    promo: bool | None = Field(default=None)
+    reprint: bool | None = Field(default=None)
+    variation: bool | None = Field(default=None)
+    set_id: str | None = Field(default=None)
+    set: str | None = Field(default=None)
+    set_name: str | None = Field(default=None)
+    set_type: str | None = Field(default=None)
+    set_uri: HttpUrl | None = Field(default=None)
+    set_search_uri: HttpUrl | None = Field(default=None)
+    scryfall_set_uri: HttpUrl | None = Field(default=None)
+    rulings_uri: HttpUrl | None = Field(default=None)
+    prints_search_uri: HttpUrl | None = Field(default=None)
+    collector_number: str | None = Field(default=None)
+    digital: bool | None = Field(default=None)
+    rarity: str | None = Field(default=None)
+    flavor_text: str | None = Field(default=None)
+    card_back_id: str | None = Field(default=None)
+    artist: str | None = Field(default=None)
+    artist_ids: list[str] | None = Field(default=[])
+    illustration_id: str | None = Field(default=None)
+    border_color: str | None = Field(default=None)
+    frame: str | None = Field(default=None)
+    full_art: bool | None = Field(default=None)
+    textless: bool | None = Field(default=None)
+    booster: bool | None = Field(default=None)
+    story_spotlight: bool | None = Field(default=None)
+    edhrec_rank: int | None = Field(default=None)
+    prices: Prices | None = Field(default=None)
+    related_uris: RelatedUris | None = Field(default=None)
