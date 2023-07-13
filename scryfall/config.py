@@ -1,5 +1,15 @@
+from datetime import datetime
+from rich.console import Console
 
 BASE_URI = 'https://api.scryfall.com/'
+
+DEFAULT_CACHE_DIRECTORY = './.cache'
+CURRENT_RULE_FMT = '%Y%m%d'
+CURRENT_DATE = datetime.now().date().strftime(CURRENT_RULE_FMT)
+FILE_POST_FIX = f'_{CURRENT_DATE}.json'
+
+console = Console()
+
 
 catalog_endpoints = [
     'card-names'

@@ -8,7 +8,6 @@ packages = [{include = "jace_the_bot"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-discord-py = "^2.2.3"
 requests = "^2.30.0"
 pydantic = "^1.10.7"
 duckdb = "^0.7.1"
@@ -16,13 +15,11 @@ pandas = "^2.0.1"
 brotli = "^1.0.9"
 pytest = "^7.3.1"
 ujson = "^5.7.0"
-langchain = "^0.0.149"
-#pdf2image
-#pytesseract
-#pypdf
-#faiss-cpu
 pygpt4all = "^1.1.0"
 unstructured = "^0.6.8"
+rich = "^13.4.2"
+griptape = "^0.13.0"
+griptape-tools = "^0.15.1"
 
 
 [build-system]

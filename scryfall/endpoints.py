@@ -1,4 +1,4 @@
-import json
+import ujson as json
 from pydantic import BaseModel, Field
 import requests as req
 from scryfall.config import BASE_URI

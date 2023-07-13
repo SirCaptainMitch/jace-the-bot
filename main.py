@@ -4,7 +4,10 @@ from pydantic import ValidationError
 
 from gatherer import Gatherer
 from scryfall.models import *
-from database import generate_data_cache
+from database import generate_data_cache, generate_catalog_tables
+from scryfall import Scryfall
+from rich.console import Console
+console = Console()
 
 cache_dir: str = './.cache'
 
@@ -26,13 +29,18 @@ def parse_oracle_cards(directory: str = cache_dir, file_name: str = 'jace_defaul
 
 
 if __name__ == '__main__':
-
-    refresh_cache: bool = False
+    gatherer = Gatherer()
+    scryfall = Scryfall()
+    refresh_cache: bool = True
 
     if refresh_cache:
         # generate_catalog_tables()
-        generate_data_cache()
+        # generate_data_cache()
+        gatherer.generate_rules()
+        scryfall.generate_catalogs()
+        scryfall.generate_oracle_cards()
+        scryfall.generate_rulings()
 
     # [print(x) for x in parse_oracle_cards()]
-    Gatherer().generate_rules()
+
 
