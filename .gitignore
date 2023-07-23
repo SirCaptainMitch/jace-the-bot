@@ -1,4 +1,5 @@
 .idea
+poetry.lock
 
 data/*.db
 data/test*.json
