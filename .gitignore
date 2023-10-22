@@ -1,5 +1,6 @@
 .idea
 poetry.lock
+.vscode
 
 data/*.db
 data/test*.json
