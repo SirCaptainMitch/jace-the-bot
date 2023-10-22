@@ -1,0 +1,11 @@
+services:
+  main:
+#    build: .
+    image: jace:latest
+    ports:
+      - "8501:8501"
+#    depends_on:
+#      - duckdb
+    volumes:
+      - .:/code
+#    command: ["streamlit", "run", "app.py", "--server.port", "8501", "--server.enableCORS", "false"]

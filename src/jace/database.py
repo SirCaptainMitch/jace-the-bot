@@ -3,13 +3,14 @@ from pathlib import Path
 import tempfile
 import duckdb
 import pandas as pd
-from scryfall.config import catalog_endpoints
-from scryfall.endpoints import CatalogEndpoint, BulkEndpoint
+from src.scryfall.config import catalog_endpoints
+from src.scryfall.endpoints import CatalogEndpoint, BulkEndpoint
+from src.jace.config import progress
 
 
 db = duckdb.connect(database=':memory:')
 
-cache_dir: str = './.cache'
+cache_dir: str = '.cache'
 
 
 def save_file_to_directory(file_name, content, directory: str = cache_dir):
@@ -23,7 +24,6 @@ def save_file_to_directory(file_name, content, directory: str = cache_dir):
 def save_file_to_temp_directory(file_name, content):
     temp_dir = Path(tempfile.gettempdir())
     file_path = temp_dir / file_name
-    print(file_path)
     with open(file_path, 'w') as file:
         file.write(json.dumps(content, indent=5))
 
@@ -48,16 +48,15 @@ def generate_data_cache():
     save_file_to_directory(file_name='jace_all_cards.json', content=all_cards)
 
 
-def generate_catalog_tables(tables: list[str] = catalog_endpoints):
+def generate_catalog_table(table: str):
 
-    for table in tables:
-        catalog_endpoint = CatalogEndpoint()
-        uri_name = table
-        table_name = table.replace('-', '_')
-        data = catalog_endpoint.get_catalog(name=uri_name)
+    catalog_endpoint = CatalogEndpoint()
+    uri_name = table
+    table_name = table.replace('-', '_')
+    data = catalog_endpoint.get_catalog(name=uri_name)
 
-        df = pd.DataFrame(data=data, columns=['name'])
-        db.register('data_df', df)
-        db.execute(f'CREATE TABLE {table_name} AS SELECT * FROM data_df')
+    df = pd.DataFrame(data=data, columns=['name'])
+    db.register('data_df', df)
+    db.execute(f'CREATE TABLE {table_name} AS SELECT * FROM data_df')
 
-        print(db.sql(f'SELECT * FROM {table_name}').fetchdf())
+    return db.sql(f'SELECT * FROM {table_name}').fetchdf().count()

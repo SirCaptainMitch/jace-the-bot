@@ -1,7 +1,8 @@
 import ujson as json
 from pydantic import BaseModel, Field
-import requests as req
-from scryfall.config import BASE_URI
+# import requests as req
+import httpx as req
+from src.scryfall.config import BASE_URI
 # from scryfall.exceptions import APIException, AuthenticationError
 
 
@@ -9,20 +10,33 @@ class APIClient(BaseModel):
 
     base_url: str = Field(default=BASE_URI)
 
-    def request(self, method, url, params=None, data=None, headers=None):
+    @staticmethod
+    def build_headers(headers=None) -> dict:
+
         if headers:
             headers = {
                 'Content-Type': 'application/json',
                 **headers
             }
-        else:
-            headers = {
-                'User-Agent': 'Mozilla/5.0',
-                'Content-Type': 'application/json',
-            }
+            return headers
 
-        response = req.request(method, url, params=params, json=data, headers=headers)
+        headers = {
+            'User-Agent': 'Mozilla/5.0',
+            'Content-Type': 'application/json',
+        }
+        return headers
 
+    def request(self, url: str, method: str | None = 'GET', params=None, data=None, headers=None) -> req.Response:
+
+        headers = self.build_headers(headers)
+        response = req.request(
+            url
+            , method
+            , params=params
+            , json=data
+            , headers=headers
+            , timeout=500.00
+        )
         # if response.status_code == 401:
         #     raise AuthenticationError('Invalid authentication token.')
         # if response.status_code >= 400:
@@ -94,5 +108,10 @@ class CatalogEndpoint(APIClient):
         data = self.request('GET', url)
         return data.json().get('data')
 
+    def get_catalog_response(self, name: str) -> req.Response:
+        endpoint = f'{self.base_endpoint}/{name}'
+        url = f'{self.base_url}/{endpoint}'
+        res = self.request('GET', url)
+        return res
 
 

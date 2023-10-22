@@ -4,6 +4,8 @@ poetry.lock
 data/*.db
 data/test*.json
 .cache/*.zip
+jace/.cache/*.zip
+#jace/.cache/*.zip
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -47,7 +49,7 @@ htmlcov/
 .tox/
 .coverage
 .coverage.*
-.cache
+src/jace/.cache
 nosetests.xml
 coverage.xml
 *.cover

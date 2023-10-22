@@ -1,7 +1,7 @@
 import json
 from pydantic import BaseModel, Field
 import requests as req
-from gatherer.config import BASE_URI, CURRENT_RULE_URI
+from src.gatherer.config import BASE_URI, CURRENT_RULE_URI
 # from scryfall.exceptions import APIException, AuthenticationError
 
 
