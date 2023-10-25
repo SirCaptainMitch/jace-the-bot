@@ -60,4 +60,4 @@ def generate_catalog_tables(tables: list[str] = catalog_endpoints):
         db.register('data_df', df)
         db.execute(f'CREATE TABLE {table_name} AS SELECT * FROM data_df')
 
-        print(db.sql(f'SELECT * FROM {table_name}').fetchdf())
+        # print(db.sql(f'SELECT * FROM {table_name}').fetchdf())

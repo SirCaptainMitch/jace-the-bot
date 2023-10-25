@@ -35,5 +35,6 @@ class RulesEndpoint(APIClient):
 
     def get_txt_rules(self):
         url = f'{CURRENT_RULE_URI}'
+        print(url)
         data = self.request('GET', url)
         return data
