@@ -37,9 +37,9 @@ if __name__ == '__main__':
         generate_catalog_tables()
         generate_data_cache()
         gatherer.generate_rules()
-        scryfall.generate_catalogs()
-        scryfall.generate_oracle_cards()
-        scryfall.generate_rulings()
+        # scryfall.generate_catalogs()
+        # scryfall.generate_oracle_cards()
+        # scryfall.generate_rulings()
 
     # [print(x) for x in parse_oracle_cards()]
 
