@@ -59,4 +59,8 @@ def generate_catalog_table(table: str):
     db.register('data_df', df)
     db.execute(f'CREATE TABLE {table_name} AS SELECT * FROM data_df')
 
+<<<<<<< HEAD:src/jace/database.py
     return db.sql(f'SELECT * FROM {table_name}').fetchdf().count()
+=======
+        # print(db.sql(f'SELECT * FROM {table_name}').fetchdf())
+>>>>>>> b52cd4bf0f3796cad8ec8273777ab972061d773a:database.py

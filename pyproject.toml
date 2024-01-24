@@ -10,18 +10,21 @@ packages = [{include = "jace"}]
 python = "^3.11"
 requests = "^2.30.0"
 pydantic = "^2.0.3"
-duckdb = "^0.8.1"
 pandas = "^2.0.1"
 brotli = "^1.0.9"
 pytest = "^7.3.1"
 ujson = "^5.7.0"
-pygpt4all = "^1.1.0"
 unstructured = "^0.8.1"
 rich = "^13.4.2"
+<<<<<<< HEAD
 griptape = "^0.14.6"
 griptape-tools = "^0.16.3"
 gpt4all = "^1.0.5"
 httpx = "^0.24.1"
+=======
+typer = "^0.9.0"
+duckdb = "^0.9.1"
+>>>>>>> b52cd4bf0f3796cad8ec8273777ab972061d773a
 
 
 [build-system]
