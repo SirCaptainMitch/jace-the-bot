@@ -7,8 +7,6 @@ from src.gatherer.config import DEFAULT_CACHE_DIRECTORY
 from rich.console import Console
 console = Console()
 
-# cache_dir: str = './.cache'
-
 
 def save_file_to_directory(file_name, content, directory: str , output_type: str = 'txt'):
     # Create a Path object for the directory
