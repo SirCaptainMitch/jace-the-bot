@@ -10,7 +10,6 @@ FILE_POST_FIX = f'_{CURRENT_DATE}.json'
 
 # console = Console()
 
-
 catalog_endpoints = [
     'card-names'
     , 'artist-names'

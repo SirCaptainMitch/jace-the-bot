@@ -24,6 +24,8 @@ def save_file_to_directory(file_name, content, directory: str = DEFAULT_CACHE_DI
         with open(file_path, 'wb') as file:
             file.write(content)
 
+    print(file_path)
+
     if output_type == 'json':
         with open(file_path, 'w', encoding='utf-8') as f:
             json.dump(content, f, ensure_ascii=False, indent=4)

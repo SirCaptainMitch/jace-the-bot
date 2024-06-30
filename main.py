@@ -34,7 +34,7 @@ if __name__ == '__main__':
     refresh_cache: bool = True
 
     if refresh_cache:
-    #     generate_catalog_tables()
+        generate_catalog_tables()
     #     generate_data_cache()
         gatherer.generate_rules()
         # scryfall.generate_catalogs()
