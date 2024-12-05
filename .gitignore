@@ -6,7 +6,9 @@ data/*.db
 data/test*.json
 .cache/*.zip
 jace/.cache/*.zip
-#jace/.cache/*.zip
+src/jace/.cache
+notebooks/.cache
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
