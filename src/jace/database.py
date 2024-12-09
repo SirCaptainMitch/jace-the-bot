@@ -4,7 +4,7 @@ import tempfile
 import duckdb
 import pandas as pd
 from src.scryfall.config import catalog_endpoints
-from src.scryfall.endpoints import CatalogEndpoint, BulkEndpoint
+from src.scryfall.endpoints import CatalogEndpoint, BulkEndpoint, SetEndpoint
 from src.jace.config import progress
 
 
@@ -76,6 +76,12 @@ def generate_all_cards_cache():
     """Generates a cached file for the Scryfall all cards endpoint."""
     all_cards = BulkEndpoint().get_all_cards()
     save_file_to_directory(file_name='jace_all_cards.json', content=all_cards)
+
+
+def generate_sets_cache():
+    """Generates a cached file for the Scryfall sets endpoint."""
+    rulings = SetEndpoint().get_sets()
+    save_file_to_directory(file_name='jace_sets.json', content=rulings)
 
 
 def generate_catalog_table(table: str):
