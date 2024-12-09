@@ -115,3 +115,11 @@ class CatalogEndpoint(APIClient):
         return res
 
 
+class SetEndpoint(APIClient):
+    base_endpoint: str = Field(default='/sets')
+
+    def get_sets(self) -> list[str]:
+        endpoint = f'{self.base_endpoint}'
+        url = f'{self.base_url}/{endpoint}'
+        data = self.request('GET', url)
+        return data.json().get('data')

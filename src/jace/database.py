@@ -4,7 +4,7 @@ import tempfile
 import duckdb
 import pandas as pd
 from src.scryfall.config import catalog_endpoints
-from src.scryfall.endpoints import CatalogEndpoint, BulkEndpoint
+from src.scryfall.endpoints import CatalogEndpoint, BulkEndpoint, SetEndpoint
 from src.jace.config import progress
 
 
@@ -48,6 +48,42 @@ def generate_data_cache():
     save_file_to_directory(file_name='jace_all_cards.json', content=all_cards)
 
 
+def generate_oracle_cache():
+    """Generates a cached file for the Scryfall oracle cards endpoint."""
+    oracle_cards = BulkEndpoint().get_oracle_cards()
+    save_file_to_directory(file_name='jace_oracle_cards.json', content=oracle_cards)
+
+
+def generate_card_rulings_cache():
+    """Generates a cached file for the Scryfall card rulings endpoint."""
+    rulings = BulkEndpoint().get_rulings()
+    save_file_to_directory(file_name='jace_rulings.json', content=rulings)
+
+
+def generate_default_cards_cache():
+    """Generates a cached file for the Scryfall default cards endpoint."""
+    default_cards = BulkEndpoint().get_default_cards()
+    save_file_to_directory(file_name='jace_default_cards.json', content=default_cards)
+
+
+def generate_unique_artwork_cache():
+    """Generates a cached file for the Scryfall unique artwork cards endpoint."""
+    unique_artwork = BulkEndpoint().get_unique_artwork()
+    save_file_to_directory(file_name='jace_unique_artwork.json', content=unique_artwork)
+
+
+def generate_all_cards_cache():
+    """Generates a cached file for the Scryfall all cards endpoint."""
+    all_cards = BulkEndpoint().get_all_cards()
+    save_file_to_directory(file_name='jace_all_cards.json', content=all_cards)
+
+
+def generate_sets_cache():
+    """Generates a cached file for the Scryfall sets endpoint."""
+    rulings = SetEndpoint().get_sets()
+    save_file_to_directory(file_name='jace_sets.json', content=rulings)
+
+
 def generate_catalog_table(table: str):
 
     catalog_endpoint = CatalogEndpoint()
@@ -57,10 +93,6 @@ def generate_catalog_table(table: str):
 
     df = pd.DataFrame(data=data, columns=['name'])
     db.register('data_df', df)
-    db.execute(f'CREATE TABLE {table_name} AS SELECT * FROM data_df')
+    db.execute(f'CREATE OR REPLACE TABLE {table_name} AS SELECT * FROM data_df')
 
-<<<<<<< HEAD:src/jace/database.py
     return db.sql(f'SELECT * FROM {table_name}').fetchdf().count()
-=======
-        # print(db.sql(f'SELECT * FROM {table_name}').fetchdf())
->>>>>>> b52cd4bf0f3796cad8ec8273777ab972061d773a:database.py
