@@ -1,5 +1,5 @@
 import unittest
-from src.scryfall.endpoints import CatalogEndpoint, BulkEndpoint
+from scryfall import CatalogEndpoint, BulkEndpoint
 
 
 class CatalogEndpointTestCase(unittest.TestCase):

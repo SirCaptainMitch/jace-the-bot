@@ -6,7 +6,7 @@ from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeElapsedColumn
 from rich.table import Table
 from rich.console import Console
-from src.jace.database import (
+from jace.database import (
     generate_catalog_table
     , generate_oracle_cache
     , generate_default_cards_cache
@@ -14,7 +14,7 @@ from src.jace.database import (
     , generate_unique_artwork_cache
     , generate_all_cards_cache
 )
-from src.scryfall.config import catalog_endpoints
+from scryfall.config import catalog_endpoints
 
 console = Console()
 

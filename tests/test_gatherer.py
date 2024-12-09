@@ -1,5 +1,5 @@
 import unittest
-from src.gatherer.endpoints import RulesEndpoint
+from gatherer import RulesEndpoint
 
 
 class BulkDataTestCase(unittest.TestCase):

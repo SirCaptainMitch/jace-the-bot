@@ -1,38 +1,15 @@
-import json
-from pathlib import Path
-import tempfile
 import duckdb
 import pandas as pd
-from src.scryfall.config import catalog_endpoints
-from src.scryfall.endpoints import CatalogEndpoint, BulkEndpoint, SetEndpoint
-from src.jace.config import progress
-
+from jace.utils import save_file_to_directory, save_file_to_temp_directory
+from scryfall.endpoints import CatalogEndpoint, BulkEndpoint, SetEndpoint
 
 db = duckdb.connect(database=':memory:')
 
 cache_dir: str = '.cache'
 
 
-def save_file_to_directory(file_name, content, directory: str = cache_dir):
-    dir_path = Path(directory)
-    dir_path.mkdir(parents=True, exist_ok=True)
-    file_path = dir_path / file_name
-    with open(file_path, 'w') as file:
-        file.write(json.dumps(content, indent=5))
-
-
-def save_file_to_temp_directory(file_name, content):
-    temp_dir = Path(tempfile.gettempdir())
-    file_path = temp_dir / file_name
-    with open(file_path, 'w') as file:
-        file.write(json.dumps(content, indent=5))
-
-    return file_path
-
-
 def generate_data_cache():
     oracle_cards = BulkEndpoint().get_oracle_cards()
-    # save_file_to_temp_directory(file_name='jace_oracle_cards.json', content=oracle_cards)
     save_file_to_directory(file_name='jace_oracle_cards.json', content=oracle_cards)
 
     rulings = BulkEndpoint().get_rulings()

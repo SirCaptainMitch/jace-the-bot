@@ -2,7 +2,7 @@ import ujson as json
 from pydantic import BaseModel, Field
 # import requests as req
 import httpx as req
-from src.scryfall.config import BASE_URI
+from scryfall.config import BASE_URI
 # from scryfall.exceptions import APIException, AuthenticationError
 
 

@@ -2,10 +2,9 @@ import ujson as json
 from pathlib import Path
 from pydantic import ValidationError
 
-from src.gatherer import Gatherer
-from src.scryfall.models import *
+from gatherer import Gatherer
 # from src.database import generate_data_cache, generate_catalog_tables
-from src.scryfall import Scryfall
+from scryfall import Scryfall
 from rich.console import Console
 console = Console()
 

@@ -1,9 +1,9 @@
 from pathlib import Path
 from pydantic import BaseModel, Field
 
-from src.gatherer.config import CURRENT_RULE_TXT
-from src.gatherer.endpoints import RulesEndpoint
-from src.gatherer.config import DEFAULT_CACHE_DIRECTORY
+from gatherer.config import CURRENT_RULE_TXT
+from gatherer.endpoints import RulesEndpoint
+from gatherer.config import DEFAULT_CACHE_DIRECTORY
 from rich.console import Console
 console = Console()
 

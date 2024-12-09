@@ -1,5 +1,4 @@
 from datetime import datetime
-# from rich.console import Console
 
 BASE_URI = 'https://api.scryfall.com/'
 

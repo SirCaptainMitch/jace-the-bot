@@ -1,15 +1,9 @@
-import time
-import random
-import os
-import sys
 import ujson as json
 from pathlib import Path
 from pydantic import ValidationError
-from src.jace.config import console, CACHE_PATH, progress
-from src.gatherer import Gatherer
-from src.scryfall.models import *
-from src.scryfall.config import catalog_endpoints
-from src.scryfall import Scryfall
+from jace.config import CACHE_PATH
+from gatherer import Gatherer
+from scryfall import Scryfall, Card
 from rich.panel import Panel
 
 
@@ -26,7 +20,6 @@ def parse_oracle_cards(directory: str = CACHE_PATH, file_name: str = 'jace_defau
         except (json.JSONDecodeError, ValidationError) as e:
             print(f"Error parsing JSON: {e}")
             yield None
-    print(len(data))
 
 
 if __name__ == '__main__':
@@ -36,20 +29,5 @@ if __name__ == '__main__':
     scryfall = Scryfall()
     refresh_cache: bool = True
 
-    if refresh_cache:
-        if sys.argv[1:]:
-            generate_catalogs(sys.argv[1:])
-        else:
-            generate_catalogs(catalog_endpoints)
-
-        # generate_catalog_tables()
-        # generate_data_cache()
-        # print(console)
-        # gatherer.generate_rules()
-        # scryfall.generate_catalogs()
-        # scryfall.generate_oracle_cards()
-        # scryfall.generate_rulings()
-
-    # console.print([x for x in parse_oracle_cards()])
-
+    pass
 

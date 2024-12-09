@@ -3,11 +3,9 @@
 from pathlib import Path
 import ujson as json
 from pydantic import BaseModel, Field
-from src.scryfall.endpoints import CatalogEndpoint, BulkEndpoint
-# from rich.console import Console
-from src.scryfall.config import catalog_endpoints, FILE_POST_FIX
-from src.scryfall.config import DEFAULT_CACHE_DIRECTORY
-# console = Console()
+from scryfall.endpoints import CatalogEndpoint, BulkEndpoint
+from scryfall.config import catalog_endpoints, FILE_POST_FIX
+from scryfall.config import DEFAULT_CACHE_DIRECTORY
 
 
 def save_file_to_directory(file_name, content, directory: str = DEFAULT_CACHE_DIRECTORY, output_type: str = 'txt'):
@@ -23,8 +21,6 @@ def save_file_to_directory(file_name, content, directory: str = DEFAULT_CACHE_DI
     if output_type == 'txt':
         with open(file_path, 'wb') as file:
             file.write(content)
-
-    print(file_path)
 
     if output_type == 'json':
         with open(file_path, 'w', encoding='utf-8') as f:
@@ -76,8 +72,6 @@ class Scryfall(BaseModel):
 
 if __name__ == '__main__':
     pass
-    # generate_catalog_tables()
-    # generate_data_cache()
 
 
 
