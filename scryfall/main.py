@@ -60,7 +60,7 @@ class Scryfall(BaseModel):
             catalogs = catalog_endpoints
 
         directory = f'{directory}/catalogs'
-
+        print(directory)
         for catalog in catalogs:
             res = CatalogEndpoint().get_catalog(name=catalog)
             catalog = catalog.replace('-', '_')
