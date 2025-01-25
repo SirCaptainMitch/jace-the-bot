@@ -32,7 +32,7 @@ if __name__ == '__main__':
     refresh_cache: bool = False
 
 
-    gatherer.generate_rules()
+    # gatherer.generate_rules()
     # if refresh_cache:
     #     scryfall.generate_catalogs()
     #     scryfall.generate_oracle_cards()
