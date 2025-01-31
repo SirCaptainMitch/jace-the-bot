@@ -29,17 +29,15 @@ if __name__ == '__main__':
 
     gatherer = Gatherer()
     scryfall = Scryfall()
-    refresh_cache: bool = False
-
+    refresh_cache: bool = True
 
     # gatherer.generate_rules()
-    # if refresh_cache:
-    #     scryfall.generate_catalogs()
-    #     scryfall.generate_oracle_cards()
-    #     scryfall.generate_rulings()
-    #
-    #     generate_data_cache()
-    #
-    #
-    # [print(x) for x in parse_oracle_cards(file_name = 'jace_sets.json')]
+    if refresh_cache:
+        scryfall.generate_catalogs()
+        scryfall.generate_oracle_cards()
+        scryfall.generate_rulings()
 
+        generate_data_cache()
+
+
+    # [print(x) for x in parse_oracle_cards(file_name = 'jace_sets.json')]
