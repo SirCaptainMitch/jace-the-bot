@@ -2,6 +2,7 @@ import ujson as json
 from pathlib import Path
 from pydantic import ValidationError
 from jace.config import CACHE_PATH
+from jace.constants import cache_path
 from gatherer import Gatherer
 from scryfall import Scryfall, Card
 from jace.database import generate_data_cache
@@ -29,17 +30,23 @@ if __name__ == '__main__':
 
     gatherer = Gatherer()
     scryfall = Scryfall()
-    refresh_cache: bool = False
-
+    refresh_cache: bool = True
 
     # gatherer.generate_rules()
-    # if refresh_cache:
-    #     scryfall.generate_catalogs()
-    #     scryfall.generate_oracle_cards()
-    #     scryfall.generate_rulings()
+    if refresh_cache:
+        scryfall.generate_catalogs()
+        # scryfall.generate_oracle_cards()
+        # scryfall.generate_rulings()
+
+        generate_data_cache(cache_dir=str(cache_path))
+
+
+    # def generate_catalog_table(table: str):
+    #     data = catalog_endpoint.get_catalog(name=uri_name)
     #
-    #     generate_data_cache()
+    #     df = pd.DataFrame(data=data, columns=['name'])
+    #     db.register('catalog', df)
+    #     db.execute(f'CREATE OR REPLACE TABLE {table_name} AS SELECT * FROM data_df')
     #
-    #
-    # [print(x) for x in parse_oracle_cards(file_name = 'jace_sets.json')]
+    #     return db.sql(f'SELECT * FROM {table_name}').fetchdf().count()
 
