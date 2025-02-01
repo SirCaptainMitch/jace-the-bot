@@ -1,7 +1,13 @@
+from datetime import datetime
 from pydantic import BaseModel, HttpUrl, Field
 
 
-class ImageUris(BaseModel):
+class ScryfallBaseModel(BaseModel):
+    oracle_id: int | None = Field(default=None)
+    created_date: datetime | None = Field(default=None)
+
+
+class ImageUris(ScryfallBaseModel):
     small: HttpUrl | None = Field(default=None)
     normal: HttpUrl | None = Field(default=None)
     large: HttpUrl | None = Field(default=None)
@@ -10,7 +16,7 @@ class ImageUris(BaseModel):
     border_crop: HttpUrl | None = Field(default=None)
 
 
-class Legalities(BaseModel):
+class Legalities(ScryfallBaseModel):
     standard: str | None = Field(default=None)
     future: str | None = Field(default=None)
     historic: str | None = Field(default=None)
@@ -34,7 +40,7 @@ class Legalities(BaseModel):
     predh: str | None = Field(default=None)
 
 
-class Prices(BaseModel):
+class Prices(ScryfallBaseModel):
     usd: str | None = Field(default=None)
     usd_foil: str | None = Field(default=None)
     usd_etched: str | None = Field(default=None)
@@ -43,14 +49,14 @@ class Prices(BaseModel):
     tix: str | None = Field(default=None)
 
 
-class RelatedUris(BaseModel):
+class RelatedUris(ScryfallBaseModel):
     gatherer: HttpUrl | None = Field(default=None)
     tcgplayer_infinite_articles: HttpUrl | None = Field(default=None)
     tcgplayer_infinite_decks: HttpUrl | None = Field(default=None)
     edhrec: HttpUrl | None = Field(default=None)
 
 
-class Card(BaseModel):
+class Card(ScryfallBaseModel):
     object: str | None = Field(default=None)
     id: str | None = Field(default=None)
     oracle_id: str | None = Field(default=None)

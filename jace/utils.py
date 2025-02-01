@@ -5,6 +5,7 @@ import tempfile
 from pathlib import Path
 from typing import TypeVar
 
+import duckdb as duck
 from omegaconf import OmegaConf, DictConfig
 
 
@@ -54,14 +55,14 @@ def save_file_to_directory(file_name: str, content: typing.Any, directory: str):
     dir_path = Path(directory)
     dir_path.mkdir(parents=True, exist_ok=True)
     file_path = dir_path / file_name
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf-8') as file:
         file.write(json.dumps(content, indent=5))
 
 
 def save_file_to_temp_directory(file_name: str, content: typing.Any):
     temp_dir = Path(tempfile.gettempdir())
     file_path = temp_dir / file_name
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf-8') as file:
         file.write(json.dumps(content, indent=5))
 
     return file_path
