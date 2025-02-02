@@ -1,6 +1,5 @@
 import ujson as json
 from pydantic import BaseModel, Field
-# import requests as req
 import httpx as req
 from scryfall.config import BASE_URI
 # from scryfall.exceptions import APIException, AuthenticationError
@@ -107,12 +106,6 @@ class CatalogEndpoint(APIClient):
         url = f'{self.base_url}/{endpoint}'
         data = self.request('GET', url)
         return data.json().get('data')
-
-    def get_catalog_response(self, name: str) -> req.Response:
-        endpoint = f'{self.base_endpoint}/{name}'
-        url = f'{self.base_url}/{endpoint}'
-        res = self.request('GET', url)
-        return res
 
 
 class SetEndpoint(APIClient):

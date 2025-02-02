@@ -7,8 +7,8 @@ data/test*.json
 .cache/*.zip
 jace/.cache/*.zip
 jace/.cache
+scryfall/.cache
 notebooks/.cache
-
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
