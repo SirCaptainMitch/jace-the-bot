@@ -5,9 +5,10 @@ import tempfile
 from pathlib import Path
 from typing import TypeVar
 
-import duckdb as duck
+from pydantic import ValidationError
 from omegaconf import OmegaConf, DictConfig
 
+from scryfall import Card
 
 DataT = TypeVar('DataT')
 
@@ -66,6 +67,21 @@ def save_file_to_temp_directory(file_name: str, content: typing.Any):
         file.write(json.dumps(content, indent=5))
 
     return file_path
+
+
+def parse_oracle_cards(directory: str, file_name: str = 'jace_default_cards.json'):
+    dir_path = Path(directory)
+    file_path = dir_path / file_name
+    with open(file_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    for x in data[:]:
+        try:
+            card = Card(**x)
+            yield card
+        except (json.JSONDecodeError, ValidationError) as e:
+            print(f"Error parsing JSON: {e}")
+            yield None
 
 
 if __name__ == '__main__':
