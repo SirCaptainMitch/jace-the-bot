@@ -1,6 +1,7 @@
 from datetime import datetime
 
 BASE_URI = 'https://api.scryfall.com/'
+BASE_DATA_URI = 'https://data.scryfall.io'
 
 DEFAULT_CACHE_DIRECTORY = './.cache'
 CURRENT_RULE_FMT = '%Y%m%d'

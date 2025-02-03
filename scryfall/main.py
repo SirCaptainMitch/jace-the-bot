@@ -9,7 +9,17 @@ from abc import ABC, abstractmethod
 import ujson as json
 from pydantic import BaseModel, Field
 
-from scryfall.endpoints import CatalogEndpoint, BulkEndpoint, SetEndpoint
+from scryfall.endpoints import (
+    CatalogEndpoint,
+    SetEndpoint,
+    OracleCardEndpoint,
+    RulingEndpoint,
+    AllCardsEndpoint,
+    UniqueArtworkEndpoint,
+    DefaultCardEndpoint,
+
+)
+
 from scryfall.config import catalog_endpoints, FILE_POST_FIX, DEFAULT_CACHE_DIRECTORY
 
 
@@ -67,7 +77,11 @@ class Scryfall(BaseModel):
 
     cache_dir: str | None = Field(default=DEFAULT_CACHE_DIRECTORY)
     file_path_post_fix: str | None = Field(default=FILE_POST_FIX)
-    bulk_endpoint: BulkEndpoint | None = Field(default_factory=BulkEndpoint)
+    oracle_cards_endpoint: OracleCardEndpoint | None = Field(default_factory=OracleCardEndpoint)
+    ruling_endpoint: RulingEndpoint | None = Field(default_factory=RulingEndpoint)
+    unique_artwork_endpoint: UniqueArtworkEndpoint | None = Field(default_factory=UniqueArtworkEndpoint)
+    default_cards_endpoint: DefaultCardEndpoint | None = Field(default_factory=DefaultCardEndpoint)
+    all_cards_endpoint: AllCardsEndpoint | None = Field(default_factory=AllCardsEndpoint)
     catalog_endpoint: CatalogEndpoint | None = Field(default_factory=CatalogEndpoint)
     set_endpoint: SetEndpoint | None = Field(default_factory=SetEndpoint)
 
@@ -91,7 +105,7 @@ class Scryfall(BaseModel):
         cmd = DataCommand(
             file_name=file_name,
             directory=directory,
-            endpoint=self.bulk_endpoint.get_rulings()
+            endpoint=self.ruling_endpoint.get
         )
         self.execute_command(cmd)
 
@@ -102,7 +116,7 @@ class Scryfall(BaseModel):
         cmd = DataCommand(
             file_name=file_name,
             directory=directory,
-            endpoint=self.bulk_endpoint.get_oracle_cards()
+            endpoint=self.oracle_cards_endpoint.get
         )
         self.execute_command(cmd)
 
@@ -113,12 +127,13 @@ class Scryfall(BaseModel):
         catalogs = catalogs if catalogs else catalog_endpoints
 
         for catalog in catalogs:
-            full_file_name = self._build_file_name(catalog.replace('-', '_'))
-            endpoint_callable = partial(self.catalog_endpoint.get_catalog, name=catalog)
+            full_file_name = self._build_file_name(catalog)
+            cat = self.catalog_endpoint
+            cat.catalog_name = catalog
             cmd = DataCommand(
                 file_name=full_file_name,
                 directory=directory,
-                endpoint=endpoint_callable
+                endpoint=cat.get
             )
             self.execute_command(cmd)
 
@@ -129,40 +144,40 @@ class Scryfall(BaseModel):
         cmd = DataCommand(
             file_name=file_name,
             directory=directory,
-            endpoint=self.set_endpoint.get_sets()
+            endpoint=self.set_endpoint.get
         )
         self.execute_command(cmd)
 
-    def generate_all_cards(self, file_name: str = 'sets', directory: str | None = None):
+    def generate_all_cards(self, file_name: str = 'all_cards', directory: str | None = None):
         """Generates all card data from the Scryfall API. This is a very large data set and could take time."""
         directory = self._resolve_directory(directory)
         file_name = self._build_file_name(file_name)
         cmd = DataCommand(
             file_name=file_name,
             directory=directory,
-            endpoint=self.bulk_endpoint.get_all_cards()
+            endpoint=self.all_cards_endpoint.get
         )
         self.execute_command(cmd)
 
-    def generate_unique_cards(self, file_name: str = 'sets', directory: str | None = None):
+    def generate_unique_cards(self, file_name: str = 'unique_cards', directory: str | None = None):
         """Generates unique card data from the Scryfall API."""
         directory = self._resolve_directory(directory)
         file_name = self._build_file_name(file_name)
         cmd = DataCommand(
             file_name=file_name,
             directory=directory,
-            endpoint=self.bulk_endpoint.get_unique_artwork()
+            endpoint=self.unique_artwork_endpoint.get
         )
         self.execute_command(cmd)
 
-    def generate_default_cards(self, file_name: str = 'sets', directory: str | None = None):
+    def generate_default_cards(self, file_name: str = 'default_cards', directory: str | None = None):
         """Generates default cards data from the Scryfall API."""
         directory = self._resolve_directory(directory)
         file_name = self._build_file_name(file_name)
         cmd = DataCommand(
             file_name=file_name,
             directory=directory,
-            endpoint=self.bulk_endpoint.get_default_cards()
+            endpoint=self.default_cards_endpoint.get
         )
         self.execute_command(cmd)
 
@@ -170,4 +185,10 @@ class Scryfall(BaseModel):
 if __name__ == '__main__':
     # Example usage:
     scryfall = Scryfall()
-    scryfall.generate_catalogs()
+    # scryfall.generate_catalogs()
+    # scryfall.generate_sets()
+    # scryfall.generate_oracle_cards()
+    scryfall.generate_unique_cards()
+    # scryfall.generate_default_cards()
+    # scryfall.generate_all_cards()
+    # scryfall.generate_rulings()

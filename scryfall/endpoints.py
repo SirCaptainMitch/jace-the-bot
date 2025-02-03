@@ -1,17 +1,17 @@
+from abc import ABC, abstractmethod
+
+import httpx as req
 import ujson as json
 from pydantic import BaseModel, Field
-import httpx as req
+
 from scryfall.config import BASE_URI
-# from scryfall.exceptions import APIException, AuthenticationError
 
 
 class APIClient(BaseModel):
-
     base_url: str = Field(default=BASE_URI)
 
     @staticmethod
     def build_headers(headers=None) -> dict:
-
         if headers:
             headers = {
                 'Content-Type': 'application/json',
@@ -26,7 +26,6 @@ class APIClient(BaseModel):
         return headers
 
     def request(self, url: str, method: str | None = 'GET', params=None, data=None, headers=None) -> req.Response:
-
         headers = self.build_headers(headers)
         response = req.request(
             url
@@ -43,76 +42,115 @@ class APIClient(BaseModel):
         return response
 
 
-class BulkEndpoint(APIClient):
-    base_endpoint: str = Field(default='/bulk-data')
+class Endpoint(ABC):
 
-    def get_bulk_data(self) -> list[str]:
-        endpoint = f'{self.base_endpoint}'
-        url = f'{self.base_url}/{endpoint}'
+    @abstractmethod
+    def _resolve_url(self):
+        """Resolves the URL to ensure it is properly formatted."""
+
+    @abstractmethod
+    def get(self):
+        """Interface for a Rest GET endpoint."""
+
+
+class DataEndpoint(Endpoint, APIClient):
+    base_endpoint: str = Field(default=None)
+
+    def _resolve_url(self):
+        print(self.base_url)
+        return f'{self.base_url}/{self.base_endpoint}'
+
+    def get(self):
+        """Gets Scryfall data from the API that does not require a full file download."""
+        url = self._resolve_url()
         data = self.request('GET', url)
         return data.json().get('data')
 
-    def get_oracle_cards(self):
-        endpoint = f'{self.base_endpoint}/oracle-cards'
-        url = f'{self.base_url}/{endpoint}'
-        res = self.request('GET', url).json()
-        data = self.request('GET', res['download_uri'], headers={
-            'Accept-Encoding': 'gzip'
-        }).content
-        return json.loads(data)
 
-    def get_rulings(self):
-        endpoint: str = f'{self.base_endpoint}/rulings'
-        url = f'{self.base_url}/{endpoint}'
-        res = self.request('GET', url).json()
-        data = self.request('GET', res['download_uri'], headers={
-            'Accept-Encoding': 'gzip'
-        }).content
-        return json.loads(data)
+class BulkDataEndpoint(Endpoint, APIClient):
+    bulk_endpoint: str = Field(default='/bulk-data')
+    base_endpoint: str = Field(default=None)
+    headers: dict = Field(default={'Accept-Encoding': 'gzip'})
 
-    def get_all_cards(self):
-        endpoint: str = f'{self.base_endpoint}/all-cards'
-        url = f'{self.base_url}/{endpoint}'
-        res = self.request('GET', url).json()
-        data = self.request('GET', res['download_uri'], headers={
-            'Accept-Encoding': 'gzip'
-        }).content
-        return json.loads(data)
+    def _resolve_url(self):
+        return f'{self.base_url}/{self.bulk_endpoint}/{self.base_endpoint}'
 
-    def get_unique_artwork(self):
-        endpoint: str = f'{self.base_endpoint}/unique-artwork'
-        url = f'{self.base_url}/{endpoint}'
+    def get(self) -> dict:
+        url = self._resolve_url()
         res = self.request('GET', url).json()
-        data = self.request('GET', res['download_uri'], headers={
-            'Accept-Encoding': 'gzip'
-        }).content
-        return json.loads(data)
-
-    def get_default_cards(self):
-        endpoint: str = f'{self.base_endpoint}/default-cards'
-        url = f'{self.base_url}/{endpoint}'
-        res = self.request('GET', url).json()
-        data = self.request('GET', res['download_uri'], headers={
-            'Accept-Encoding': 'gzip'
-        }).content
+        data = self.request('GET', res['download_uri'], headers=self.headers).content
         return json.loads(data)
 
 
-class CatalogEndpoint(APIClient):
+class OracleCardEndpoint(BulkDataEndpoint):
+    base_endpoint: str = Field(default='/oracle-cards')
+
+    def get(self):
+        """Gets the Oracle Cards data from Scryfall by downloading the bulk file.
+        This file name changes daily, and requires two calls to get the correct uri.
+        """
+        return super().get()
+
+
+class RulingEndpoint(BulkDataEndpoint):
+    base_endpoint: str = Field(default='/rulings')
+
+    def get(self):
+        """Gets the Card Ruling data from Scryfall by downloading the bulk file.
+        This file name changes daily, and requires two calls to get the correct uri.
+        """
+        return super().get()
+
+
+class AllCardsEndpoint(BulkDataEndpoint):
+    base_endpoint: str = Field(default='/all-cards')
+
+    def get(self):
+        """Gets the All Cards data from Scryfall by downloading the bulk file.
+        This file name changes daily, and requires two calls to get the correct uri.
+        """
+        return super().get()
+
+
+class UniqueArtworkEndpoint(BulkDataEndpoint):
+    base_endpoint: str = Field(default='/unique-artwork')
+
+    def get(self):
+        """Gets the Unique Artwork for cards data from Scryfall by downloading the bulk file.
+        This file name changes daily, and requires two calls to get the correct uri.
+        """
+        return super().get()
+
+
+class DefaultCardEndpoint(BulkDataEndpoint):
+    base_endpoint: str = Field(default='/default-cards')
+
+    def get(self):
+        """Gets the Oracle Cards data from Scryfall by downloading the bulk file.
+        This file name changes daily, and requires two calls to get the correct uri.
+        """
+        return super().get()
+
+
+class CatalogEndpoint(DataEndpoint):
+    catalog_name: str = Field(default=None)
     base_endpoint: str = Field(default='/catalog')
 
-    def get_catalog(self, name: str) -> list[str]:
-        endpoint = f'{self.base_endpoint}/{name}'
-        url = f'{self.base_url}/{endpoint}'
-        data = self.request('GET', url)
-        return data.json().get('data')
+    def _resolve_url(self):
+        return f'{self.base_url}/{self.base_endpoint}/{self.catalog_name}'
+
+    def get(self) -> list[str]:
+        """Gets data from the Scryfall API for a specific catalog."""
+        return super().get()
 
 
-class SetEndpoint(APIClient):
+class SetEndpoint(DataEndpoint):
     base_endpoint: str = Field(default='/sets')
 
-    def get_sets(self) -> list[str]:
-        endpoint = f'{self.base_endpoint}'
-        url = f'{self.base_url}/{endpoint}'
-        data = self.request('GET', url)
-        return data.json().get('data')
+    def get(self) -> list[str]:
+        """Gets data from the Scryfall API for all sets."""
+        return super().get()
+
+
+if __name__ == '__main__':
+    pass
