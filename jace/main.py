@@ -8,23 +8,18 @@ from rich.panel import Panel
 from rich import print
 
 
-
-
-
 if __name__ == '__main__':
     # print(Panel("Hello, [blue]World!", title="Welcome", subtitle="Thank you"))
 
     gatherer = Gatherer()
-
     refresh_cache: bool = True
-
     # gatherer.generate_rules()
-    # if refresh_cache:
+    if refresh_cache:
         # scryfall.generate_catalogs(directory=str(cache_path))
         # scryfall.generate_oracle_cards(directory=str(cache_path))
         # scryfall.generate_rulings()
 
-        # generate_data_cache(cache_dir=str(cache_path))
+        generate_data_cache(cache_dir=str(cache_path))
 
     # def generate_catalog_table(table: str):
     #     data = catalog_endpoint.get_catalog(name=uri_name)

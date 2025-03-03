@@ -101,6 +101,7 @@ class Scryfall(BaseModel):
     def generate_rulings(self, file_name: str = 'rulings', directory: str | None = None):
         """Generates the card rulings data from the Scryfall API."""
         directory = self._resolve_directory(directory)
+        directory = f'{directory}/rulings'
         file_name = self._build_file_name(file_name)
         cmd = DataCommand(
             file_name=file_name,
@@ -112,6 +113,7 @@ class Scryfall(BaseModel):
     def generate_oracle_cards(self, file_name: str = 'oracle_cards', directory: str | None = None):
         """Generates the oracle cards data from the Scryfall API."""
         directory = self._resolve_directory(directory)
+        directory = f'{directory}/oracle_cards'
         file_name = self._build_file_name(file_name)
         cmd = DataCommand(
             file_name=file_name,
@@ -140,6 +142,7 @@ class Scryfall(BaseModel):
     def generate_sets(self, file_name: str = 'sets', directory: str | None = None):
         """Generates sets data from the Scryfall API."""
         directory = self._resolve_directory(directory)
+        directory = f'{directory}/sets'
         file_name = self._build_file_name(file_name)
         cmd = DataCommand(
             file_name=file_name,
@@ -151,6 +154,7 @@ class Scryfall(BaseModel):
     def generate_all_cards(self, file_name: str = 'all_cards', directory: str | None = None):
         """Generates all card data from the Scryfall API. This is a very large data set and could take time."""
         directory = self._resolve_directory(directory)
+        directory = f'{directory}/all_cards'
         file_name = self._build_file_name(file_name)
         cmd = DataCommand(
             file_name=file_name,
@@ -162,6 +166,7 @@ class Scryfall(BaseModel):
     def generate_unique_cards(self, file_name: str = 'unique_cards', directory: str | None = None):
         """Generates unique card data from the Scryfall API."""
         directory = self._resolve_directory(directory)
+        directory = f'{directory}/unique_cards'
         file_name = self._build_file_name(file_name)
         cmd = DataCommand(
             file_name=file_name,
@@ -173,6 +178,7 @@ class Scryfall(BaseModel):
     def generate_default_cards(self, file_name: str = 'default_cards', directory: str | None = None):
         """Generates default cards data from the Scryfall API."""
         directory = self._resolve_directory(directory)
+        directory = f'{directory}/default_cards'
         file_name = self._build_file_name(file_name)
         cmd = DataCommand(
             file_name=file_name,
@@ -183,12 +189,4 @@ class Scryfall(BaseModel):
 
 
 if __name__ == '__main__':
-    # Example usage:
-    scryfall = Scryfall()
-    # scryfall.generate_catalogs()
-    # scryfall.generate_sets()
-    # scryfall.generate_oracle_cards()
-    scryfall.generate_unique_cards()
-    # scryfall.generate_default_cards()
-    # scryfall.generate_all_cards()
-    # scryfall.generate_rulings()
+    pass

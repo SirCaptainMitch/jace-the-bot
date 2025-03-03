@@ -3,8 +3,6 @@ from datetime import datetime
 import typer
 
 from jace.utils import get_config, save_config
-from jace.database import get_db
-
 
 app_name = 'jace'
 config_name = 'config.yml'
@@ -31,9 +29,10 @@ data_path.mkdir(parents=True, exist_ok=True)
 cache_path.mkdir(parents=True, exist_ok=True)
 
 CURRENT_DATE = datetime.now().date().strftime('%Y%m%d')
-FILE_POST_FIX = f'_{CURRENT_DATE}.json'
+FILE_POST_FIX = f'_{CURRENT_DATE}'
 
-jace_db = get_db(path=str(db_path), read_only=False)
+## TODO: This causes a circular import, not sure if I want this in here or not.
+# jace_db = get_db(path=str(db_path), read_only=False)
 
 
 if __name__ == '__main__':

@@ -9,17 +9,15 @@ from rich.live import Live
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeElapsedColumn
 from rich.table import Table
-from jace.database import (
-    generate_catalog_table,
-    generate_oracle_cache,
-    generate_default_cards_cache,
-    generate_card_rulings_cache,
-    generate_unique_artwork_cache,
-    generate_all_cards_cache,
-)
+
+from jace.constants import cache_path
+
+from scryfall import Scryfall
 from scryfall.config import catalog_endpoints
 
+
 console = Console()
+scryfall = Scryfall(cache_dir=str(cache_path))
 
 
 def create_table() -> Table:
@@ -128,8 +126,8 @@ def process_catalogs(job, tbl: Table) -> None:
     for idx, endpoint in enumerate(catalog_endpoints):
         job.fields["current"] = endpoint
         try:
-            result = generate_catalog_table(table=endpoint)
-        except Exception:
+            result = scryfall.generate_catalogs(catalogs=[endpoint])
+        except BaseException as e:
             console.print_exception()
             result = "Error"
         tbl.add_row(str(idx), endpoint, f"[green]{result}")
@@ -162,7 +160,12 @@ def process_job(job, tbl: Table) -> None:
     elif job_name == "generate_catalog_table":
         process_catalogs(job, tbl)
     elif job_name == "generate_scryfall_all_cards":
-        process_single_step_job(job, tbl, "generate_scryfall_all_cards", generate_all_cards_cache)
+        process_single_step_job(
+            job
+            , tbl
+            , "generate_scryfall_all_cards"
+            , lambda x: scryfall.generate_all_cards(file_name='jace_all_cards.json')
+        )
     elif job_name == "generate_scryfall_artwork":
         process_single_step_job(job, tbl, "generate_scryfall_artwork", generate_unique_artwork_cache)
     elif job_name == "generate_scryfall_default_cards":
