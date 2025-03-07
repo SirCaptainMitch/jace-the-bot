@@ -1,0 +1,15 @@
+base_cache_dir: .cache
+base_data_dir: data
+
+scryfall:
+  app_name: scryfall
+  cache_dir: ${base_cache_dir}/${.app_name}
+
+gatherer:
+  app_name: gatherer
+  cache_dir: ${base_cache_dir}/${.app_name}
+
+database:
+  output_directory: ${base_data_dir}
+  file_name: 'jace.db'
+  file_path: ${.output_directory}/${.file_name}

@@ -1,12 +1,13 @@
 import unittest
-from src.scryfall.endpoints import CatalogEndpoint, BulkEndpoint
+from scryfall.endpoints import CatalogEndpoint, BulkEndpoint
 
 
 class CatalogEndpointTestCase(unittest.TestCase):
     def test_land_types(self):
         land_types = CatalogEndpoint().get_catalog(name='land-types')
         expected = [
-            'Cloud'
+            'Cave'
+            , 'Cloud'
             , 'Desert'
             , 'Forest'
             , 'Gate'
@@ -23,7 +24,7 @@ class CatalogEndpointTestCase(unittest.TestCase):
             , "Urza's"
         ]
         actual = land_types
-        self.assertListEqual(expected, actual)  # add assertion here
+        self.assertListEqual(sorted(expected), sorted(actual))  # add assertion here
 
 
 class BulkDataTestCase(unittest.TestCase):

@@ -6,9 +6,9 @@ data/*.db
 data/test*.json
 .cache/*.zip
 jace/.cache/*.zip
-src/jace/.cache
+jace/.cache
+scryfall/.cache
 notebooks/.cache
-
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -52,7 +52,7 @@ htmlcov/
 .tox/
 .coverage
 .coverage.*
-src/jace/.cache
+jace/.cache
 nosetests.xml
 coverage.xml
 *.cover

@@ -1,12 +1,7 @@
-import os
 import os.path
-import logging
 from rich.console import Console
-from rich.logging import RichHandler
 import signal
 from threading import Event
-
-# rich.progress
 
 
 from rich.progress import (
@@ -31,7 +26,6 @@ progress = Progress(
     TimeRemainingColumn(),
 )
 
-
 done_event = Event()
 
 
@@ -44,12 +38,6 @@ signal.signal(signal.SIGINT, handle_sigint)
 console: Console = Console()
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 CACHE_PATH = os.path.join(ROOT_DIR, './.cache')
-
-# FORMAT = "%(message)s"
-# logging.basicConfig(
-#     level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()]
-# )
-# log = logging.getLogger("rich")
 
 
 if __name__ == '__main__':
